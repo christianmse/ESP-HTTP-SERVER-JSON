@@ -183,6 +183,39 @@ static esp_err_t temperature_f_data_get_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+/* Extended handler for getting temperature data in Fahrenheit and Celsius*/
+static esp_err_t temperature_extended_data_get_handler(httpd_req_t *req)
+{
+    httpd_resp_set_type(req, "application/json");
+    cJSON *root = cJSON_CreateObject();
+
+    cJSON *device_info_object = cJSON_CreateObject();
+    esp_chip_info_t chip_info;
+    esp_chip_info(&chip_info);
+    cJSON_AddStringToObject(device_info_object, "version", IDF_VER);
+    cJSON_AddNumberToObject(device_info_object, "cores", chip_info.cores);
+
+    int temperature = esp_random();
+    float temperature_fahrenheit = ((float) (temperature % 20) * 9/5) + 32.0f;
+    cJSON *c_temp_object = cJSON_CreateObject();
+    cJSON_AddNumberToObject(c_temp_object, "Celsius", temperature);
+    cJSON *f_temp_object = cJSON_CreateObject();
+    cJSON_AddNumberToObject(f_temp_object, "Fahrenheit", temperature_fahrenheit);
+
+    cJSON *temperatures = cJSON_CreateArray();
+    cJSON_AddItemToArray(temperatures, f_temp_object);
+    cJSON_AddItemToArray(temperatures, c_temp_object);
+
+    cJSON_AddItemToObject(root, "deviceInfo", device_info_object);
+    cJSON_AddItemToObject(root, "temperature", temperatures);
+
+    const char *sys_info = cJSON_Print(root);
+    httpd_resp_sendstr(req, sys_info);
+    free((void *)sys_info);
+    cJSON_Delete(root);
+    return ESP_OK;
+} 
+
 esp_err_t start_rest_server(const char *base_path)
 {
     REST_CHECK(base_path, "wrong base path", err);
@@ -215,7 +248,7 @@ esp_err_t start_rest_server(const char *base_path)
     };
     httpd_register_uri_handler(server, &temperature_f_data_get_uri);
 
-    /* URI handler for fetching temperature data */
+    /* URI handler for fetching temperature data in Celsius*/
     httpd_uri_t temperature_data_get_uri = {
         .uri = "/api/v1/temp/raw",
         .method = HTTP_GET,
@@ -223,6 +256,15 @@ esp_err_t start_rest_server(const char *base_path)
         .user_ctx = rest_context
     };
     httpd_register_uri_handler(server, &temperature_data_get_uri);
+
+    /* URI handler for fetching the extended temperature data*/
+    httpd_uri_t temperature_extended_data_get_uri = {
+        .uri = "/api/v1/temp/all",
+        .method = HTTP_GET,
+        .handler = temperature_extended_data_get_handler,
+        .user_ctx = rest_context
+    };
+    httpd_register_uri_handler(server, &temperature_extended_data_get_uri);
 
     /* URI handler for light brightness control */
     httpd_uri_t light_brightness_post_uri = {
