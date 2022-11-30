@@ -1,4 +1,4 @@
-# Install script for directory: /home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/main
+# Install script for directory: /home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

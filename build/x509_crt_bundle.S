@@ -1,4 +1,4 @@
-/* * Data converted from /home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from /home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 .section .rodata.embedded

@@ -299,7 +299,7 @@ rule C_STATIC_LIBRARY_LINKER____idf_main
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /usr/bin/cmake -S/home/optiva/esp/esp-idf/components/bootloader/subproject -B/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/bootloader
+  command = /usr/bin/cmake -S/home/optiva/esp/esp-idf/components/bootloader/subproject -B/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/bootloader
   description = Re-running CMake...
   generator = 1
 

@@ -2,34 +2,34 @@
 	"sources" : 
 	[
 		{
-			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/CMakeFiles/bootloader"
+			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/CMakeFiles/bootloader"
 		},
 		{
-			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/CMakeFiles/bootloader.rule"
+			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/CMakeFiles/bootloader.rule"
 		},
 		{
-			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/CMakeFiles/bootloader-complete.rule"
+			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/CMakeFiles/bootloader-complete.rule"
 		},
 		{
-			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule"
+			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule"
 		},
 		{
-			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule"
+			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule"
 		},
 		{
-			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule"
+			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule"
 		},
 		{
-			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule"
+			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule"
 		},
 		{
-			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule"
+			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule"
 		},
 		{
-			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule"
+			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule"
 		},
 		{
-			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule"
+			"file" : "/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule"
 		}
 	],
 	"target" : 

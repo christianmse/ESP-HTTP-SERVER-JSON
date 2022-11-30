@@ -7,12 +7,14 @@
    CONDITIONS OF ANY KIND, either express or implied.
 */
 #include <string.h>
+#include <stdio.h>
 #include <fcntl.h>
 #include "esp_http_server.h"
 #include "esp_system.h"
 #include "esp_log.h"
 #include "esp_vfs.h"
 #include "cJSON.h"
+#include "cbor.h"
 
 static const char *REST_TAG = "esp-rest";
 #define REST_CHECK(a, str, goto_tag, ...)                                              \
@@ -183,7 +185,7 @@ static esp_err_t temperature_f_data_get_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
-/* Extended handler for getting temperature data in Fahrenheit and Celsius*/
+/* Extended handler for getting temperature data in Fahrenheit and Celsius with JSON*/
 static esp_err_t temperature_extended_data_get_handler(httpd_req_t *req)
 {
     httpd_resp_set_type(req, "application/json");
@@ -214,7 +216,71 @@ static esp_err_t temperature_extended_data_get_handler(httpd_req_t *req)
     free((void *)sys_info);
     cJSON_Delete(root);
     return ESP_OK;
-} 
+}
+
+/* Extended handler for getting temperature data in Fahrenheit and Celsius with CBOR*/
+static esp_err_t temperature_extended_data_get_handler_cbor(httpd_req_t *req)
+{
+    httpd_resp_set_type(req, "application/cbor");
+    CborParser root_parser;
+    CborEncoder root_encoder;
+    CborEncoder map_encoder;
+    CborValue it;
+    uint8_t buf[150];
+
+    cbor_encoder_init(&root_encoder, buf, sizeof(buf), 0);
+
+    int temperature = esp_random();
+    float temperature_fahrenheit = ((float) (temperature % 20) * 9/5) + 32.0f;
+
+    cbor_encoder_create_map(&root_encoder, &map_encoder, 2); // {
+
+    // deviceInfo: {"version":"v1.0", "cores": 2}
+    esp_chip_info_t chip_info;
+    esp_chip_info(&chip_info);
+    CborEncoder info_encoder;
+    cbor_encode_text_stringz(&map_encoder, "deviceInfo");
+    cbor_encoder_create_map(&map_encoder, &info_encoder, 2);
+    cbor_encode_text_stringz(&info_encoder, "version");
+    cbor_encode_text_stringz(&info_encoder, IDF_VER);
+    cbor_encode_text_stringz(&info_encoder, "cores");
+    cbor_encode_uint(&info_encoder, chip_info.cores);
+    cbor_encoder_close_container(&map_encoder, &info_encoder);
+
+    // temperature:[{"Fahrenheit": 0.0}, {"Celsius": 2}]
+    CborEncoder array_encoder;
+    cbor_encode_text_stringz(&map_encoder, "temperature");
+    cbor_encoder_create_array(&map_encoder, &array_encoder, 2); // [
+
+    CborEncoder fahrenheit_encoder;
+    cbor_encoder_create_map(&array_encoder, &fahrenheit_encoder, 1);
+    cbor_encode_text_stringz(&fahrenheit_encoder, "Fahrenheit");
+    cbor_encode_float(&fahrenheit_encoder, temperature_fahrenheit);
+    cbor_encoder_close_container(&array_encoder, &fahrenheit_encoder);
+    CborEncoder celsius_encoder;
+    cbor_encoder_create_map(&array_encoder, &celsius_encoder, 1);
+    cbor_encode_text_stringz(&celsius_encoder, "Celsius");
+    cbor_encode_uint(&celsius_encoder, temperature);
+    cbor_encoder_close_container(&array_encoder, &celsius_encoder);
+
+    cbor_encoder_close_container(&map_encoder, &array_encoder); // ]
+    cbor_encoder_close_container(&root_encoder, &map_encoder); // }
+
+    // If error happend when encoding, then this value should be meaningless
+    ESP_LOGI(REST_TAG, "encoded buffer size %d", cbor_encoder_get_buffer_size(&root_encoder, buf));
+
+    // Initialize the cbor parser and the value iterator
+    cbor_parser_init(buf, sizeof(buf), 0, &root_parser, &it);
+
+    ESP_LOGI(REST_TAG, "convert CBOR to JSON");
+    // Dump the values in JSON format
+    cbor_value_to_json(stdout, &it, 0);
+    puts("");
+
+    httpd_resp_send(req, (char*)buf, cbor_encoder_get_buffer_size( &root_encoder, buf));
+
+    return ESP_OK;
+}
 
 esp_err_t start_rest_server(const char *base_path)
 {
@@ -257,7 +323,7 @@ esp_err_t start_rest_server(const char *base_path)
     };
     httpd_register_uri_handler(server, &temperature_data_get_uri);
 
-    /* URI handler for fetching the extended temperature data*/
+    /* URI handler for fetching the extended temperature data with json*/
     httpd_uri_t temperature_extended_data_get_uri = {
         .uri = "/api/v1/temp/all",
         .method = HTTP_GET,
@@ -265,6 +331,15 @@ esp_err_t start_rest_server(const char *base_path)
         .user_ctx = rest_context
     };
     httpd_register_uri_handler(server, &temperature_extended_data_get_uri);
+
+    /* URI handler for fetching the extended temperature data with cbor*/
+    httpd_uri_t temperature_extended_data_cbor_get_uri = {
+        .uri = "/api/v1/temp/all/cbor",
+        .method = HTTP_GET,
+        .handler = temperature_extended_data_get_handler_cbor,
+        .user_ctx = rest_context
+    };
+    httpd_register_uri_handler(server, &temperature_extended_data_cbor_get_uri);
 
     /* URI handler for light brightness control */
     httpd_uri_t light_brightness_post_uri = {

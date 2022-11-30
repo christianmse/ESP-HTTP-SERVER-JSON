@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/CBOR-JSON/build/bootloader/esp-idf/esp_hw_support/port/esp32/cmake_install.cmake")
+  include("/home/optiva/esp/esp-idf/RPI-II-PRACTICAS/RPI-II-PRACTICA3/JSON/build/bootloader/esp-idf/esp_hw_support/port/esp32/cmake_install.cmake")
 
 endif()
 
